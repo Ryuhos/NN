@@ -31,6 +31,8 @@ class ActivationFunction:
 
 A=[[1,2,3,4],[2,5,-1,2]]
 z = ActivationFunction(A)
-z.relu()
+k = z.relu()
 z.back
 np.array(A).T
+k.back
+z.back
