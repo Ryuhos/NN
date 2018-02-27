@@ -26,7 +26,31 @@ class layers:
         self.y = np.array(y) #onehot으로 들어와야 된다.
         self.W = make_w(self.x,self.y,w)
 
-    def layer(self,method='relu'):
+    def layer_relu(self):
+        H = self.x
+        self.result_w = []
+        self.diff = []
+        # softmax 전까지
+        # if else 로 바꾸기 relu하다가 softmax하는거
+        for i in range(len(self.W)-1):
+            W = np.random.randn(self.W[i][0],self.W[i][1]) + 1 # W ~ N(1,1)
+            J = np.dot(H,W)
+            K = ActivationFunction(J)
+            K.relu()
+            diff = np.dot(H.T,K.back)
+            H = K.relu()
+            self.result_w.append(W)
+            self.diff.append(diff)
+        # softmax 항
+        W = np.random.randn(self.W[-1][0],self.W[-1][1])
+        J = np.dot(H,W)
+        K = ActivationFunction(J)
+        O = K.softmax()
+        diff = np.dot(H.T,K.back)
+        self.result_w.append(W)
+        self.diff.append(diff)
+        pred_y = np.argmax(O,axis=1)
+        return [self.result_w, self.diff,pred_y]
 
 
 
@@ -39,5 +63,7 @@ x = [[1,2,3,4,5],[2,3,4,5,6],[2,6,1,2,3]]
 w = [15,10]
 y=[[0,1],[1,0],[0,1]]
 k = layers(x,y,w=w)
-l =k.W
-l[0]
+k.layer_relu()
+k.result_w
+k.diff
+# okay 이제 diff 를 곱해서 빼주는 작업을 optimizer에서 해주면 된다
