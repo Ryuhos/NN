@@ -24,15 +24,7 @@ class ActivationFunction:
         return result
 
     def softmax(self):
-        self.O = np.exp(self.x) / np.sum(np.exp(self.x),axis=1).reshape(-1,1)
-        self.back = 1-self.O #얘는 loss를 따로 안 곱해도 된다.
+        self.O = np.exp(self.x) / np.sum(np.exp(self.x),axis=1)
+        self.back = 1-self.O
         result = np.argmax(self.O,axis=1)
         return self.O
-
-A=[[1,2,3,4],[2,5,-1,2]]
-z = ActivationFunction(A)
-k = z.relu()
-z.back
-np.array(A).T
-k.back
-z.back
